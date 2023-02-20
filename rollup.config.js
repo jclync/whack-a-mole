@@ -1,4 +1,3 @@
-import { nodeResolve } from "@rollup/plugin-node-resolve";
 import copy from "rollup-plugin-copy";
 
 module.exports = {
@@ -9,8 +8,7 @@ module.exports = {
   treeshake: false,
   plugins: [
     copy({
-        targets: [{ src: ["index.html", "images"], dest: "dist" }]
-    }),
-    nodeResolve(),
+      targets: [{ src: ["index.html", "images"], dest: "dist" }]
+    })
   ],
 };
