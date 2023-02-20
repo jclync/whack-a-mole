@@ -12,8 +12,8 @@ let threeLives = "Lives: ❤️‍🔥 ❤️‍🔥 ❤️‍🔥";
 
 function preload() {
   mole = loadImage('images/happyBobaBee.gif');
-  owSong = loadSound('ow.mp3');
-  wrongSong = loadSound('wrong.mp3');
+  owSong = loadSound('audio/ow.mp3');
+  wrongSong = loadSound('audio/wrong.mp3');
   sad = loadImage('images/sadBobaBee.gif');
 }
 
