@@ -1,34 +1,49 @@
 let moleX, moleY, moleSize;
+let randX, randY, xPos, yPos, molePosition;
 let currentScore, highScore, lives; 
+
+function preload() {
+  mole = loadImage('happyBobaBee.gif');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  updateMole();
   textSize(20);
   
   currentScore = 0;
   highScore = 0;
   lives = 3;
-  
-  moleX = 200;
-  moleY = 200;
-  moleSize = 50;  
+
+  moleSize = 60;  
+  xPos = [windowWidth/3, windowWidth/2, windowWidth/3*2];
+  yPos = [windowHeight/3, windowHeight/2, windowHeight/3*2];
+  moleX = xPos[1];
+  moleY = yPos[1];
+  updateMole();
 }
 
 function draw() {
   playGame();
+  //drawGrid();
+  //drawMoles();
 }
 
 function playGame() {
   fill(0);
   background(200,200,300);
-  rect(moleX, moleY, moleSize);
+  image(mole, moleX, moleY, moleSize, moleSize);
   updateScore();
 }
 
+function updateMole() {
+  moleX = random(xPos);
+  moleY = random(yPos);
+  image(mole, moleX, moleY, moleSize, moleSize);
+}
+
 function mousePressed() {
-  const disX = (moleX+moleSize/2) - mouseX;
-  const disY = (moleY+moleSize/2) - mouseY;
+  const disX = (moleX + moleSize / 2) - mouseX;
+  const disY = (moleY + moleSize / 2) - mouseY;
   
   // if mole is clicked, increment score
   if (sqrt(sq(disX) + sq(disY)) < moleSize / 2) {
@@ -39,9 +54,12 @@ function mousePressed() {
   }
 }
 
-function updateMole() {
-  moleX = random(50, windowHeight/2);
-  moleY = random(50, windowHeight/2);
+function drawGrid() {
+  for (var i = 0; i < xPos.length; i++) {
+    for (var j = 0; j < xPos.length; j++) {
+      rect(xPos[i], yPos[j], moleSize);
+    }
+  } 
 }
 
 function updateScore() {
