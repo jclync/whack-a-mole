@@ -104,9 +104,10 @@ function updateScore() {
   text(life, windowWidth/11, 30);
   text("Score: " + currentScore, windowWidth/11, 60);
   textAlign(CENTER);
-  text("Whack-A-Bee", windowWidth/2, 30);
+  image(sMole, windowWidth/2, windowHeight-75, 30, 30);
   textSize(13);
   text("whack the SAD bees", windowWidth/2, windowHeight - 30);
+  text("Whack-A-Bee", windowWidth/2, 30);
   textAlign(RIGHT);
   textSize(20);
   text("High Score: " + highScore, windowWidth/11*10, 30);
@@ -168,11 +169,6 @@ function checkScore() {
   }
 }
   
-/*
-Mole Class Constructor taken from hapiel's p5 'week 5.3 Minimalist Whack-A-Mole copy' code
-
-https://editor.p5js.org/hapiel/sketches/4srUmVHfj
-*/
 class Mole {
   constructor() {
     this.timeSpan = int(random(50, 300));
