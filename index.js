@@ -1,3 +1,7 @@
+let moles = [];
+let score = 0;
+let timeSpan;
+
 let moleX, moleY, moleSize;
 let randX, randY, xPos, yPos, molePosition;
 let currentScore, highScore, lives, gameOver; 
@@ -11,10 +15,10 @@ let twoLives = "Lives: ❤️‍🔥 ❤️‍🔥 💔";
 let threeLives = "Lives: ❤️‍🔥 ❤️‍🔥 ❤️‍🔥";
 
 function preload() {
-  mole = loadImage('images/happyBobaBee.gif');
+  hMole = loadImage('images/happyBobaBee.gif');
+  sMole = loadImage('images/sadBobaBee.gif');
   owSong = loadSound('audio/ow.mp3');
   wrongSong = loadSound('audio/wrong.mp3');
-  sad = loadImage('images/sadBobaBee.gif');
 }
 
 function setup() {
@@ -32,6 +36,10 @@ function setup() {
   moleX = xPos[1];
   moleY = yPos[1];
   gameOver = false;
+  
+  for (let i = 0; i < 3; i++){
+    moles.push(new Mole());
+  }
 }
 
 function draw() {
@@ -44,44 +52,40 @@ function playGame() {
   fill(0);
   background(200,200,300);
   drawGrid();
-  image(mole, moleX, moleY, moleSize, moleSize);
   updateScore();
   
-  if (checkTime()) {
-    updateMole();
+  for (let i = 0; i < moles.length; i++){
+    let timeSpan = moles[i].timeSpan;
+    
+    if (moles[i].counter < timeSpan) { //delay before appearance
+      moles[i].counter++; 
+    } else if (moles[i].counter >= timeSpan && moles[i].counter < timeSpan * 2) { //appearance
+      moles[i].drawMole(); 
+    } else { // if over time, disappear
+      moles.push(new Mole());
+      moles.splice(i,1);
+    }
   }
 }
-
-function checkTime() {
-  if (millis() > resetTime + timeDuration) {
-    resetTime = millis();
-    timeDuration = random(3)*1000;
-    counter = 0;
-    return true;
-  } else {
-    counter++;
-  }
-}
-
-function updateMole() {
-  //image(mole, -50, -50, moleSize, moleSize);
-  moleX = random(xPos);
-  moleY = random(yPos);
-  image(mole, moleX, moleY, moleSize, moleSize);
-}
-
 
 function mousePressed() {
-  const disX = (moleX + moleSize / 2) - mouseX;
-  const disY = (moleY + moleSize / 2) - mouseY;
-  
-  // if mole is clicked, increment score
-  if (sqrt(sq(disX) + sq(disY)) < moleSize / 2) {
-    currentScore += 1;
-    owSong.play();
-  } else {
-    lives--;
-    wrongSong.play();
+  for (let i = 0; i < moles.length; i++){
+    const disX = (moles[i].x + moles[i].size / 2) - mouseX;
+    const disY = (moles[i].y + moles[i].size / 2) - mouseY;
+    
+    if (sqrt(sq(disX) + sq(disY)) <= moles[i].size / 2) {
+      if (moles[i].type != 0) {
+        currentScore++; 
+        wrongSong.play();
+      } else {
+        lives--;
+        owSong.play();
+      }
+      moles.push(new Mole());
+      moles.splice(i,1);
+    } else {
+      //owSong.play();
+    }
   }
 }
 
@@ -100,8 +104,11 @@ function updateScore() {
   text(life, windowWidth/11, 30);
   text("Score: " + currentScore, windowWidth/11, 60);
   textAlign(CENTER);
-  text("Whack-A-Mole", windowWidth/2, 30);
+  text("Whack-A-Bee", windowWidth/2, 30);
+  textSize(13);
+  text("whack the SAD bees", windowWidth/2, windowHeight - 30);
   textAlign(RIGHT);
+  textSize(20);
   text("High Score: " + highScore, windowWidth/11*10, 30);
     
   // update high score
@@ -136,7 +143,7 @@ function endGame() {
   fill(255);
   text("Your High Score: " + highScore, width/2, height/2);
   text("Press space to play again!", width/2, height/3*2);
-  image(sad, width/8, height/3*2, 200, 200);
+  image(sMole, width/8, height/3*2, 200, 200);
 }
   
 function keyPressed() {
@@ -158,5 +165,30 @@ function restart() {
 function checkScore() {
   if (currentScore > highScore) {
     highScore = currentScore;
+  }
+}
+  
+/*
+Mole Class Constructor taken from hapiel's p5 'week 5.3 Minimalist Whack-A-Mole copy' code
+
+https://editor.p5js.org/hapiel/sketches/4srUmVHfj
+*/
+class Mole {
+  constructor() {
+    this.timeSpan = int(random(50, 300));
+    this.size = 60;
+    this.x = random(xPos);
+    this.y = random(yPos);
+    this.type = int(random(2)); //determine happy or sad
+    this.counter = 0;
+  }
+  
+  drawMole() {
+    if(this.type == 0) {
+      image(hMole, this.x, this.y, this.size, this.size);
+    } else {
+      image(sMole, this.x, this.y, this.size, this.size);  
+    }
+    this.counter++;
   }
 }
