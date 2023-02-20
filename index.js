@@ -3,7 +3,8 @@ let randX, randY, xPos, yPos, molePosition;
 let currentScore, highScore, lives; 
 
 function preload() {
-  mole = loadImage('happyBobaBee.gif');
+  mole = loadImage('images/happyBobaBee.gif');
+  sadMole = loadImage('images/sadBobaBee.gif');
 }
 
 function setup() {
