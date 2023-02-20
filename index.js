@@ -11,10 +11,10 @@ let twoLives = "Lives: ❤️‍🔥 ❤️‍🔥 💔";
 let threeLives = "Lives: ❤️‍🔥 ❤️‍🔥 ❤️‍🔥";
 
 function preload() {
-  mole = loadImage('happyBobaBee.gif');
+  mole = loadImage('images/happyBobaBee.gif');
   owSong = loadSound('ow.mp3');
   wrongSong = loadSound('wrong.mp3');
-  sad = loadImage('sadBobaBee.gif');
+  sad = loadImage('images/sadBobaBee.gif');
 }
 
 function setup() {
